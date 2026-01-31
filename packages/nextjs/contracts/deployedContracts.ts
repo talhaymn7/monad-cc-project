@@ -4,6 +4,99 @@
  */
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
-const deployedContracts = {} as const;
+const deployedContracts = {
+  31337: {
+    MultiplayerPayment: {
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_orderId",
+              type: "uint256",
+            },
+          ],
+          name: "contribute",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_orderId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_targetAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "address payable",
+              name: "_seller",
+              type: "address",
+            },
+          ],
+          name: "createOrder",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "orders",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "targetAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "currentAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "address payable",
+              name: "seller",
+              type: "address",
+            },
+            {
+              internalType: "bool",
+              name: "isCompleted",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_orderId",
+              type: "uint256",
+            },
+          ],
+          name: "paySeller",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+      deployedOnBlock: 1,
+    },
+  },
+} as const;
 
 export default deployedContracts satisfies GenericContractsDeclaration;
