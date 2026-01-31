@@ -10,36 +10,39 @@ import { database } from "~~/services/firebaseConfig";
 export default function LobbyPage() {
   const router = useRouter();
   const { address } = useAccount();
-  const { roomId, members } = useCart();
+  const { roomId, members, admin, roomStatus, startOrder, joinRoom } = useCart(); // useCart'tan gerekli her şeyi aldık
   const [memberNames, setMemberNames] = useState<Record<string, string>>({});
 
+  // Giriş yapan kişi oda yöneticisi mi? (Küçük harf standardıyla kontrol)
+  const isAdmin = address?.toLowerCase() === admin?.toLowerCase();
 
-  // LobbyPage.tsx içindeki useEffect'lerin üstüne ekle kanka
-  const { joinRoom } = useCart();
-
+  // --- 1. OTOMATİK YÖNLENDİRME ---
+  // Admin başlattığında Firebase'deki status "shopping" olur ve bu efekt herkesi markete uçurur.
   useEffect(() => {
-    // Eğer roomId yoksa ama biz Lobby sayfasındaysak, 
-    // URL'den veya localStorage'dan id'yi geri getirebiliriz.
-    const savedRoomId = localStorage.getItem("lastRoomId");
+    if (roomStatus === "shopping") {
+      router.push("/market");
+    }
+  }, [roomStatus, router]);
+
+  // --- 2. SESSION KURTARMA ---
+  useEffect(() => {
+    const savedRoomId = localStorage.getItem("active_session_id");
     if (!roomId && savedRoomId) {
       joinRoom(savedRoomId);
     }
-  }, [roomId]);
+  }, [roomId, joinRoom]);
 
-  // Cüzdan adreslerini isimlere dönüştür
+  // --- 3. İSİM SENKRONİZASYONU ---
   useEffect(() => {
-    // Eğer odada kimse yoksa işlem yapma
     if (members.length === 0) return;
 
     const unsubscribes = members.map((addr) => {
-      // KRİTİK: Database'e küçük harfle kaydettiğimiz için burada da küçük harfle arıyoruz
       const normalizedAddr = addr.toLowerCase();
       const userRef = ref(database, `users_by_address/${normalizedAddr}`);
 
       return onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
           const userData = snapshot.val();
-          // State'i güncelle: Adres -> İsim eşleşmesi
           setMemberNames(prev => ({
             ...prev,
             [addr]: userData.fullName
@@ -48,17 +51,17 @@ export default function LobbyPage() {
       });
     });
 
-    // Temizlik: Bileşen kapandığında veya members değiştiğinde eski dinleyicileri kapat
     return () => unsubscribes.forEach(unsub => unsub());
   }, [members]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6 font-sans">
       <div className="w-full max-w-lg">
+        
         {/* Oda Kodu Bölümü */}
         <div className="text-center mb-8">
-          <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold tracking-wide">
-            🟢 ODA AKTİF
+          <span className={`px-4 py-2 rounded-full text-sm font-bold tracking-wide ${roomStatus === "waiting" ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
+            {roomStatus === "waiting" ? "🟢 ODA AKTİF" : "🚀 SİPARİŞ BAŞLIYOR..."}
           </span>
           <h1 className="text-4xl font-black text-gray-800 mt-4">Pizzacılar Kulübü 🍕</h1>
           <p className="text-gray-400 mt-2">
@@ -66,6 +69,7 @@ export default function LobbyPage() {
           </p>
         </div>
 
+        {/* Katılımcılar Kartı */}
         <div className="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden mb-8">
           <div className="p-6 bg-[#ea004b]">
             <h2 className="text-white font-bold text-lg">Katılımcılar ({members.length}/4)</h2>
@@ -90,6 +94,10 @@ export default function LobbyPage() {
                       </h3>
                       <p className="text-sm font-bold text-green-500">Hazır</p>
                     </div>
+                    {/* Admin Rozeti */}
+                    {memberAddr.toLowerCase() === admin?.toLowerCase() && (
+                      <span className="text-[10px] bg-gray-900 text-white px-2 py-1 rounded-md font-bold uppercase tracking-tighter">Yönetici</span>
+                    )}
                   </div>
                 );
               })
@@ -97,12 +105,19 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        <button
-          onClick={() => router.push("/market")}
-          className="w-full bg-gray-900 hover:bg-black text-white font-bold py-5 rounded-2xl text-xl shadow-lg transition-all flex items-center justify-center gap-3 group"
-        >
-          Siparişi Başlat ➔
-        </button>
+        {/* KOLEKTİF AKSİYON BUTONU */}
+        {isAdmin ? (
+          <button
+            onClick={startOrder} // startOrder direkt Firebase status'u günceller
+            className="w-full bg-gray-900 hover:bg-black text-white font-bold py-5 rounded-2xl text-xl shadow-lg transition-all flex items-center justify-center gap-3 group"
+          >
+            Siparişi Başlat (Yönetici) ➔
+          </button>
+        ) : (
+          <div className="w-full bg-white border border-gray-100 text-gray-400 font-bold py-5 rounded-2xl text-xl text-center shadow-sm italic">
+            Yöneticinin başlatması bekleniyor... ⏳
+          </div>
+        )}
       </div>
     </div>
   );

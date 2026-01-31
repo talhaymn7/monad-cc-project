@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation"; // searchParams eklendi
+import { useRouter, useSearchParams } from "next/navigation";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useAccount } from "wagmi";
-import { useCart } from "~~/hooks/useCart"; // Senin multiplayer beynin
+import { useCart } from "~~/hooks/useCart";
 import { notification } from "~~/utils/scaffold-eth";
 import { FoodCharacter } from "~~/components/FoodCharacter";
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { address } = useAccount(); // Bağlı cüzdan adresi
-  const { createRoom } = useCart(); // Oda kurma fonksiyonu
+  const { address } = useAccount();
+  const { createRoom } = useCart();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +29,7 @@ export default function LoginPage() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // --- KRİTİK GİRİŞ MANTIĞI ---
+  // --- KRİTİK GİRİŞ MANTIĞI (TEMİZLENDİ) ---
   const handleLogin = async () => {
     if (!email || !password) {
       notification.error("Kanka bilgilerini girmeden konsey seni içeri almaz! 🍔");
@@ -42,24 +42,10 @@ export default function LoginPage() {
     try {
       // 1. Firebase ile Giriş Yap
       await signInWithEmailAndPassword(auth, email, password);
-      
-      const redirectAction = searchParams.get("redirect");
+      notification.success("Giriş başarılı! 🚀");
 
-      // 2. Eğer "Oda Oluştur" niyetindeyse
-      if (redirectAction === "createRoom") {
-        if (!address) {
-          notification.error("Giriş tamam ama oda kurmak için sağ üstten cüzdanını bağla kanka! 🦊");
-          setLoading(false);
-          return;
-        }
-        
-        createRoom(); // Session oluşturulur ve kaydedilir
-        notification.success("Hoş geldin! Oda kuruldu, lobiye gidiyoruz. 🍕");
-        router.push("/lobby");
-      } else {
-        notification.success("Giriş başarılı! 🚀");
-        router.push("/"); 
-      }
+      // 2. Başarılı giriş sonrası Seçim sayfasına yönlendir
+      router.push("/choice");
     } catch (error: any) {
       console.error(error);
       notification.error("Giriş başarısız. Şifreni veya e-postanı kontrol et kanka.");
@@ -68,9 +54,10 @@ export default function LoginPage() {
     }
   };
 
+  // --- JSX RETURN (FONKSİYONUN DIŞINA ÇIKARILDI) ---
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden bg-brand-light selection:bg-brand selection:text-white animate-fade-in">
-      
+
       {/* ARKA PLAN DOKUSU */}
       <div className="absolute inset-0 opacity-[0.05] bg-dot-pattern bg-dot-size pointer-events-none"></div>
 
@@ -89,7 +76,7 @@ export default function LoginPage() {
 
       {/* ANA FORM KARTI */}
       <div className="bg-white/80 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] shadow-deep w-full max-w-md border border-white relative z-10 animate-slide-up mt-32 md:mt-48">
-        
+
         <Link href="/" className="absolute top-8 left-8 text-gray-400 hover:text-brand transition-colors p-2 rounded-full hover:bg-pink-50 active:scale-90">
           <span className="text-xl">🔙</span>
         </Link>
@@ -102,8 +89,8 @@ export default function LoginPage() {
         <div className="space-y-6">
           <div className="group">
             <label className="block text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-2 ml-4">E-Posta</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ornek@mail.com"
@@ -113,8 +100,8 @@ export default function LoginPage() {
 
           <div className="group relative z-20">
             <label className="block text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-2 ml-4">Şifre</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onFocus={() => setIsPasswordFocus(true)}
@@ -127,7 +114,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <button 
+          <button
             onClick={handleLogin}
             disabled={loading}
             className={`w-full bg-brand hover:bg-brand-dark text-white font-black py-5 rounded-2xl text-xl shadow-brand-glow transition-all duration-300 transform active:scale-95 hover:-translate-y-1 relative overflow-hidden group mt-4 z-20 ${loading ? "opacity-50" : ""}`}>
