@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Payment.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract MultiplayerPayment {\r\n    struct Order {\r\n        uint256 targetAmount; // Toplam restoran hesabı (wei cinsinden)\r\n        uint256 currentAmount; // Havuzda biriken para\r\n        address payable seller; // Restoranın cüzdan adresi\r\n        bool isCompleted; // Ödeme bitti mi?\r\n    }\r\n\r\n    mapping(uint256 => Order) public orders; // 9 haneli kod -> Sipariş Bilgisi \r\n\r\n    // Oda sahibi ödeme ekranına geçince bu çalışır\r\n    function createOrder(uint256 _orderId, uint256 _targetAmount, address payable _seller) public {\r\n        orders[_orderId] = Order(_targetAmount, 0, _seller, false);\r\n    }\r\n\r\n    // Herkes \"Öde\"ye bastığında kendi payını yollar\r\n    function contribute(uint256 _orderId) public payable {\r\n        Order storage order = orders[_orderId];\r\n        require(!order.isCompleted, \"Siparis bitti bile!\");\r\n        order.currentAmount += msg.value; // Gelen parayı havuza ekle\r\n    }\r\n\r\n    // Para tamamlanınca restorana yolla\r\n    function paySeller(uint256 _orderId) public {\r\n        Order storage order = orders[_orderId];\r\n        require(order.currentAmount >= order.targetAmount, \"Para yetersiz!\");\r\n        order.isCompleted = true;\r\n        order.seller.transfer(order.currentAmount); // Tüm parayı restorana gönder \r\n    }\r\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
