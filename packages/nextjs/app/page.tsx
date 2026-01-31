@@ -24,6 +24,7 @@ const Home: NextPage = () => {
 
   const { writeContractAsync: payToPool } = useScaffoldWriteContract("MultiplayerPayment");
 
+export default function Home() {
   return (
     <div className="flex items-center flex-col flex-grow pt-10 px-4">
       <h1 className="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
