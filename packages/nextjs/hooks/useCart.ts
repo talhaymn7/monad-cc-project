@@ -4,8 +4,7 @@ import { database } from "../services/firebaseConfig";
 import { useAccount } from "wagmi"; // Kullanıcı adresini çekmek için
 
 export const useCart = () => {
-  const [roomId, setRoomId] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<any[]>([]);
+const [roomId, setRoomId] = useState<string | null>(null);  const [cartItems, setCartItems] = useState<any[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [members, setMembers] = useState<string[]>([]); // Odadaki cüzdanlar
 
@@ -15,14 +14,22 @@ export const useCart = () => {
   const createRoom = () => {
     const newRoomId = Math.floor(100000000 + Math.random() * 900000000).toString();
     setRoomId(newRoomId);
+    localStorage.setItem("active_session_id", newRoomId); // Tarayıcıya session'ı mühürle
     return newRoomId;
   };
 
   // 2. Mevcut Bir Odaya Katılma
   const joinRoom = (id: string) => {
     setRoomId(id);
+    localStorage.setItem("active_session_id", id); // Katıldığın odayı da hatırla
   };
-
+  useEffect(() => {
+    const savedSession = localStorage.getItem("active_session_id");
+    if (savedSession && !roomId) {
+      setRoomId(savedSession);
+    }
+  }, []);
+  
   // 3. Sepete Ürün Ekleme (Firebase'e Yazma)
   const addItem = async (item: { name: string; price: number }) => {
     if (!roomId || !address) return;
