@@ -1,79 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import type { NextPage } from "next";
-import { RoomManager } from "~~/components/RoomManager";
-import { useCart } from "~~/hooks/useCart";
-import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { formatEther, parseEther } from "viem";
-import { useAccount } from "wagmi";
+import Link from "next/link";
 
-const Home: NextPage = () => {
-  const { cartItems, totalAmount, roomId, addItem } = useCart();
-  const { address } = useAccount();
-  const [customAmount, setCustomAmount] = useState<string>("");
-
-  const { data: orderInfo } = useScaffoldReadContract({
-    contractName: "MultiplayerPayment",
-    functionName: "orders",
-    args: [roomId ? BigInt(roomId) : BigInt(0)],
-  });
-
-  const targetAmount = orderInfo ? parseFloat(formatEther(orderInfo[0])) : totalAmount;
-  const currentBalance = orderInfo ? parseFloat(formatEther(orderInfo[1])) : 0;
-
-  const { writeContractAsync: payToPool } = useScaffoldWriteContract("MultiplayerPayment");
-
+export default function Home() {
   return (
-    <div className="flex items-center flex-col flex-grow pt-10 px-4">
-      <h1 className="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-        CLEAR CART
-      </h1>
-      
-      <RoomManager />
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 relative">
+      {/* Süsleme */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#ea004b] opacity-5 rounded-full blur-3xl"></div>
 
-      {roomId && (
-        <>
-          {/* Ürün Ekleme Test Butonları */}
-          <div className="mt-8 flex gap-2">
-            <button className="btn btn-outline btn-sm" onClick={() => addItem({ name: "🍕 Pizza", price: 0.01 })}>🍕 Pizza Ekle</button>
-            <button className="btn btn-outline btn-sm" onClick={() => addItem({ name: "🥤 Kola", price: 0.005 })}>🥤 Kola Ekle</button>
-          </div>
+      <div className="max-w-md w-full text-center z-10">
+        <h1 className="text-7xl font-black text-[#ea004b] tracking-tighter mb-2">Clear Cart</h1>
+        <p className="text-gray-500 text-lg mb-12 font-medium">Hesabı bölüş, dostluğu pekiştir. 🍕</p>
 
-          <div className="mt-8 p-6 bg-base-200 rounded-3xl shadow-2xl border border-primary/10 w-full max-w-md">
-            <div className="mb-6 space-y-1">
-              <p className="text-sm opacity-60 text-center">Havuz Hedefi: {targetAmount} MON</p>
-              <progress className="progress progress-success w-full" value={currentBalance} max={targetAmount}></progress>
-            </div>
+        {/* Buton Kutusu */}
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100">
+          <Link href="/login" className="block w-full">
+            <button className="w-full bg-[#ea004b] hover:bg-[#b5003a] text-white font-bold py-5 rounded-2xl text-xl shadow-lg shadow-pink-500/30 transition-transform transform hover:scale-[1.02] mb-4">
+              🚀 Giriş Yap
+            </button>
+          </Link>
 
-            <div className="max-h-40 overflow-y-auto mb-4 space-y-2">
-              {cartItems.map((item, i) => (
-                <div key={i} className={`flex justify-between p-2 rounded-lg text-sm ${item.addedBy === address ? 'bg-primary/10' : 'bg-base-100'}`}>
-                  <span>{item.name} {item.addedBy === address && "⭐"}</span>
-                  <span className="font-bold">{item.price} MON</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="join w-full mb-4">
-              <input 
-                type="number" 
-                placeholder="Payını Gir" 
-                className="input input-bordered join-item w-full" 
-                value={customAmount} 
-                onChange={(e) => setCustomAmount(e.target.value)} 
-              />
-              <button className="btn btn-secondary join-item" onClick={() => payToPool({
-                functionName: "contribute",
-                args: [BigInt(roomId)],
-                value: parseEther(customAmount)
-              })}>Öde</button>
-            </div>
-          </div>
-        </>
-      )}
+          <Link href="/register" className="block w-full">
+            <button className="w-full bg-white border-2 border-[#ea004b] text-[#ea004b] font-bold py-4 rounded-2xl text-lg hover:bg-pink-50 transition-colors">
+              Hesap Oluştur
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default Home;
+}
