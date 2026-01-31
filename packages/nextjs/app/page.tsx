@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
+
+import React, { useRef, useState } from "react";
+import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { CreditCard, CheckCircle2, ShoppingBag, ArrowRight, Wallet } from "lucide-react";
+import { Pizza, CreditCard, CheckCircle2, ShoppingBag, ArrowRight, Wallet } from "lucide-react";
 
 export default function Home() {
   return (
@@ -44,13 +46,13 @@ export default function Home() {
           >
             <Link href="/login" className="group">
               <button className="bg-[#ea004b] text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-[0_10px_30px_-10px_rgba(234,0,75,0.5)] hover:shadow-[0_20px_40px_-10px_rgba(234,0,75,0.6)] transition-all transform hover:-translate-y-1 flex items-center gap-2">
-                Giriş Yap
+                Oda Oluştur
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
             <Link href="/register">
               <button className="bg-white text-gray-900 border-2 border-gray-100 px-8 py-4 rounded-2xl font-bold text-lg hover:border-[#ea004b]/30 hover:bg-pink-50 transition-all">
-                Hesap Oluştur
+                Nasıl Çalışır?
               </button>
             </Link>
           </motion.div>
