@@ -11,18 +11,7 @@ export default function Home() {
   const { roomId, createRoom, joinRoom, members, cartItems, totalAmount, addItem } = useCart();
   const [joinInput, setJoinInput] = useState("");
   const router = useRouter(); // 2. ROUTER'I BURADA BAŞLAT
-  // EĞER ODA VARSA: Alışveriş Odasını Göster
-  if (roomId) {
-    return (
-      <RoomView
-        roomId={roomId}
-        members={members}
-        cartItems={cartItems}
-        totalAmount={totalAmount}
-        addItem={addItem}
-      />
-    );
-  }
+  
 
   return (
     <div className="min-h-screen bg-[#fff0f5] flex items-center justify-center p-6 overflow-hidden relative selection:bg-[#ea004b] selection:text-white">
