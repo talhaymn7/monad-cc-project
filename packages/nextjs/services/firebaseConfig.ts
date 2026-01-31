@@ -1,6 +1,5 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getDatabase } from "firebase/database"; 
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBDo62tQFlJhEYE-6i8KPMEiYY6kIesOjA",
@@ -10,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "monad-cc-project.firebasestorage.app",
   messagingSenderId: "676153241033",
   appId: "1:676153241033:web:69f4fb6dfeed4f6554cc18",
-  measurementId: "G-30BGYWLRQ5"
+  measurementId: "G-30BGYWLRQ5",
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
