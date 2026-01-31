@@ -23,7 +23,7 @@ export const RoomManager = () => {
       <div className="flex gap-2">
         <input
           type="text"
-          placeholder="9 Haneli Kod Gir"
+          placeholder="4 Haneli Kod Gir"
           className="input input-bordered w-full"
           value={inputRoomId}
           onChange={(e) => setInputRoomId(e.target.value)}
