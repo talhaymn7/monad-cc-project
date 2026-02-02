@@ -58,6 +58,8 @@
     "node": ">=20.18.3"
   },
   "dependencies": {
-    "firebase": "^12.8.0"
+    "firebase": "^12.8.0",
+    "framer-motion": "^12.29.2",
+    "lucide-react": "^0.563.0"
   }
 }

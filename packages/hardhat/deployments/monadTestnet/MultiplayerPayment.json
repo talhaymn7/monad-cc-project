@@ -1,0 +1,195 @@
+{
+  "address": "0x3cfb0852E617A7926065E9B88906872960EF223b",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_orderId",
+          "type": "uint256"
+        }
+      ],
+      "name": "contribute",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_orderId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_targetAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address payable",
+          "name": "_seller",
+          "type": "address"
+        }
+      ],
+      "name": "createOrder",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "orders",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "targetAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "currentAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address payable",
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "isCompleted",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_orderId",
+          "type": "uint256"
+        }
+      ],
+      "name": "paySeller",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xbfef7c91dd64528d6f9eb2b25933a9b6210367082ea2a4968f6f582f978f77d2",
+  "receipt": {
+    "to": null,
+    "from": "0x1F3CA6d726c0BF24BE1FA737310164Dd0F95332C",
+    "contractAddress": "0x3cfb0852E617A7926065E9B88906872960EF223b",
+    "transactionIndex": 2,
+    "gasUsed": "248650",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xd5d8e55cb66a3f9085b2a6d9ef676d747568a612b067862d206c990fb8459ab7",
+    "transactionHash": "0xbfef7c91dd64528d6f9eb2b25933a9b6210367082ea2a4968f6f582f978f77d2",
+    "logs": [],
+    "blockNumber": 9769141,
+    "cumulativeGasUsed": "349318",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "8fb75963dca260ce8e13195f52377e48",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_orderId\",\"type\":\"uint256\"}],\"name\":\"contribute\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_orderId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_targetAmount\",\"type\":\"uint256\"},{\"internalType\":\"address payable\",\"name\":\"_seller\",\"type\":\"address\"}],\"name\":\"createOrder\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"orders\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"targetAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentAmount\",\"type\":\"uint256\"},{\"internalType\":\"address payable\",\"name\":\"seller\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"isCompleted\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_orderId\",\"type\":\"uint256\"}],\"name\":\"paySeller\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Payment.sol\":\"MultiplayerPayment\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/Payment.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\ncontract MultiplayerPayment {\\r\\n    struct Order {\\r\\n        uint256 targetAmount; // Toplam restoran hesab\\u0131 (wei cinsinden)\\r\\n        uint256 currentAmount; // Havuzda biriken para\\r\\n        address payable seller; // Restoran\\u0131n c\\u00fczdan adresi\\r\\n        bool isCompleted; // \\u00d6deme bitti mi?\\r\\n    }\\r\\n\\r\\n    mapping(uint256 => Order) public orders; // 9 haneli kod -> Sipari\\u015f Bilgisi \\r\\n\\r\\n    // Oda sahibi \\u00f6deme ekran\\u0131na ge\\u00e7ince bu \\u00e7al\\u0131\\u015f\\u0131r\\r\\n    function createOrder(uint256 _orderId, uint256 _targetAmount, address payable _seller) public {\\r\\n        orders[_orderId] = Order(_targetAmount, 0, _seller, false);\\r\\n    }\\r\\n\\r\\n    // Herkes \\\"\\u00d6de\\\"ye bast\\u0131\\u011f\\u0131nda kendi pay\\u0131n\\u0131 yollar\\r\\n    function contribute(uint256 _orderId) public payable {\\r\\n        Order storage order = orders[_orderId];\\r\\n        require(!order.isCompleted, \\\"Siparis bitti bile!\\\");\\r\\n        order.currentAmount += msg.value; // Gelen paray\\u0131 havuza ekle\\r\\n    }\\r\\n\\r\\n    // Para tamamlan\\u0131nca restorana yolla\\r\\n    function paySeller(uint256 _orderId) public {\\r\\n        Order storage order = orders[_orderId];\\r\\n        require(order.currentAmount >= order.targetAmount, \\\"Para yetersiz!\\\");\\r\\n        order.isCompleted = true;\\r\\n        order.seller.transfer(order.currentAmount); // T\\u00fcm paray\\u0131 restorana g\\u00f6nder \\r\\n    }\\r\\n}\",\"keccak256\":\"0xf35fa5880fc22f4b248653f572d4356020840450c96e690b8af2c7bfebde8ae8\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b5061037a8061001f6000396000f3fe60806040526004361061003f5760003560e01c806323b70d761461004457806368302467146100d4578063a85c38ef146100f4578063c1cbbca71461017f575b600080fd5b34801561005057600080fd5b506100d261005f3660046102bf565b60408051608081018252928352600060208085018281526001600160a01b039485168685019081526060870184815297845291839052929091209351845590516001840155516002909201805493511515600160a01b026001600160a81b03199094169290911691909117919091179055565b005b3480156100e057600080fd5b506100d26100ef366004610304565b610192565b34801561010057600080fd5b5061014561010f366004610304565b6000602081905290815260409020805460018201546002909201549091906001600160a01b03811690600160a01b900460ff1684565b604051610176949392919093845260208401929092526001600160a01b031660408301521515606082015260800190565b60405180910390f35b6100d261018d366004610304565b610242565b60008181526020819052604090208054600182015410156101eb5760405162461bcd60e51b815260206004820152600e60248201526d5061726120796574657273697a2160901b60448201526064015b60405180910390fd5b60028101805460ff60a01b198116600160a01b1790915560018201546040516001600160a01b039092169181156108fc0291906000818181858888f1935050505015801561023d573d6000803e3d6000fd5b505050565b60008181526020819052604090206002810154600160a01b900460ff16156102a25760405162461bcd60e51b8152602060048201526013602482015272536970617269732062697474692062696c652160681b60448201526064016101e2565b348160010160008282546102b6919061031d565b90915550505050565b6000806000606084860312156102d457600080fd5b833592506020840135915060408401356001600160a01b03811681146102f957600080fd5b809150509250925092565b60006020828403121561031657600080fd5b5035919050565b8082018082111561033e57634e487b7160e01b600052601160045260246000fd5b9291505056fea26469706673582212205f1ba6fed06c5eef2b192cb35fa50586f01baab8591ec6c2985ca1dfd116546964736f6c634300081e0033",
+  "deployedBytecode": "0x60806040526004361061003f5760003560e01c806323b70d761461004457806368302467146100d4578063a85c38ef146100f4578063c1cbbca71461017f575b600080fd5b34801561005057600080fd5b506100d261005f3660046102bf565b60408051608081018252928352600060208085018281526001600160a01b039485168685019081526060870184815297845291839052929091209351845590516001840155516002909201805493511515600160a01b026001600160a81b03199094169290911691909117919091179055565b005b3480156100e057600080fd5b506100d26100ef366004610304565b610192565b34801561010057600080fd5b5061014561010f366004610304565b6000602081905290815260409020805460018201546002909201549091906001600160a01b03811690600160a01b900460ff1684565b604051610176949392919093845260208401929092526001600160a01b031660408301521515606082015260800190565b60405180910390f35b6100d261018d366004610304565b610242565b60008181526020819052604090208054600182015410156101eb5760405162461bcd60e51b815260206004820152600e60248201526d5061726120796574657273697a2160901b60448201526064015b60405180910390fd5b60028101805460ff60a01b198116600160a01b1790915560018201546040516001600160a01b039092169181156108fc0291906000818181858888f1935050505015801561023d573d6000803e3d6000fd5b505050565b60008181526020819052604090206002810154600160a01b900460ff16156102a25760405162461bcd60e51b8152602060048201526013602482015272536970617269732062697474692062696c652160681b60448201526064016101e2565b348160010160008282546102b6919061031d565b90915550505050565b6000806000606084860312156102d457600080fd5b833592506020840135915060408401356001600160a01b03811681146102f957600080fd5b809150509250925092565b60006020828403121561031657600080fd5b5035919050565b8082018082111561033e57634e487b7160e01b600052601160045260246000fd5b9291505056fea26469706673582212205f1ba6fed06c5eef2b192cb35fa50586f01baab8591ec6c2985ca1dfd116546964736f6c634300081e0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 15,
+        "contract": "contracts/Payment.sol:MultiplayerPayment",
+        "label": "orders",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_uint256,t_struct(Order)10_storage)"
+      }
+    ],
+    "types": {
+      "t_address_payable": {
+        "encoding": "inplace",
+        "label": "address payable",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_uint256,t_struct(Order)10_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct MultiplayerPayment.Order)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Order)10_storage"
+      },
+      "t_struct(Order)10_storage": {
+        "encoding": "inplace",
+        "label": "struct MultiplayerPayment.Order",
+        "members": [
+          {
+            "astId": 3,
+            "contract": "contracts/Payment.sol:MultiplayerPayment",
+            "label": "targetAmount",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 5,
+            "contract": "contracts/Payment.sol:MultiplayerPayment",
+            "label": "currentAmount",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 7,
+            "contract": "contracts/Payment.sol:MultiplayerPayment",
+            "label": "seller",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address_payable"
+          },
+          {
+            "astId": 9,
+            "contract": "contracts/Payment.sol:MultiplayerPayment",
+            "label": "isCompleted",
+            "offset": 20,
+            "slot": "2",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

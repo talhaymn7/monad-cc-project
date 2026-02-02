@@ -10995,6 +10995,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "framer-motion@npm:12.29.2"
+  dependencies:
+    motion-dom: ^12.29.2
+    motion-utils: ^12.29.2
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 3d2d6710f093bbd0b193006e92891aa8999fa13f73a55615d112b11e9875f115c0f6bce2048d6a449e55fd2caea8077da12a0394b6790fb48505744b2d63c66e
+  languageName: node
+  linkType: hard
+
 "fs-extra@npm:11.1.0":
   version: 11.1.0
   resolution: "fs-extra@npm:11.1.0"
@@ -13793,6 +13815,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.563.0":
+  version: 0.563.0
+  resolution: "lucide-react@npm:0.563.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 842fec302a57ae1e70eafe8b8b5020aef69c0f7969c3bd9af85cf3080f41c68ebedd6bf8bf041d83beb367b4e4febd5689f1e181560a602d0593c5bbfbe804bb
+  languageName: node
+  linkType: hard
+
 "main-event@npm:^1.0.1":
   version: 1.0.1
   resolution: "main-event@npm:1.0.1"
@@ -14285,6 +14316,22 @@ __metadata:
   version: 1.1.0
   resolution: "modern-ahocorasick@npm:1.1.0"
   checksum: 78b99840c9af086c1e36a594ee85bebd8c19d48e2ef31a67d1bad0e673ac12fc931e5961abb5b16daaf820af4923e700f76b1793b7413e18782230162866a0af
+  languageName: node
+  linkType: hard
+
+"motion-dom@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "motion-dom@npm:12.29.2"
+  dependencies:
+    motion-utils: ^12.29.2
+  checksum: ff3c7322716c79a697b1d7cd7afc2e7466dd18c94cb88d681637fe163003a6694abe6ccda29a07dc4cac8030647b75721db040d5cd65b44fa76972bc13b039e8
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.29.2":
+  version: 12.29.2
+  resolution: "motion-utils@npm:12.29.2"
+  checksum: 68a44a62dffd9d64e468a586be35f25a26cc0e51664ec97c54cdde208001cd5ff2e351e2e794bde47c9840ddd2c2573f2036e4905588a113697b3f512b8fb891
   languageName: node
   linkType: hard
 
@@ -16913,8 +16960,10 @@ __metadata:
   resolution: "se-2@workspace:."
   dependencies:
     firebase: ^12.8.0
+    framer-motion: ^12.29.2
     husky: ~9.1.6
     lint-staged: ~13.2.2
+    lucide-react: ^0.563.0
   languageName: unknown
   linkType: soft
 
