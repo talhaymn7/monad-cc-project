@@ -1,32 +1,69 @@
-# 🏗 Scaffold-ETH 2
+# Clear Cart - Monad Hackathon 2026
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+Grup yemek siparişlerini blockchain üzerinde paylaşan ve bölen merkeziyetsiz uygulama.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## 🚀 Özellikler
 
-> [!NOTE]
-> 🤖 Scaffold-ETH 2 is AI-ready! It has everything agents need to build on Ethereum. Check `.agents/`, `.claude/`, `.opencode` or `.cursor/` for more info.
+- **Grup Siparişleri**: Arkadaşlarınızla aynı sepete ürün ekleyin
+- **Blockchain Ödemeleri**: Monad testnet üzerinde güvenli ödemeler
+- **Anında Bölüşme**: Otomatik hesap bölme ve ödeme takibi
+- **Web3 Entegrasyonu**: MetaMask ve diğer wallet'larla uyumlu
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+## 🛠 Teknoloji Stack
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Blockchain**: Monad Testnet, Solidity
+- **Web3**: Wagmi, Viem, RainbowKit
+- **UI**: Tailwind CSS, DaisyUI
+- **Deployment**: Vercel
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## 📦 Kurulum
 
-## Requirements
+```bash
+# Bağımlılıkları yükle
+yarn install
 
-Before you begin, you need to install the following tools:
+# Local development
+yarn start
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+# Contract deploy (Hardhat)
+yarn deploy
+```
+
+## 🚀 Deployment
+
+### Vercel'e Deploy Etmek İçin
+
+1. **Vercel'e Giriş**:
+   ```bash
+   yarn vercel:login
+   ```
+
+2. **Production Deploy**:
+   ```bash
+   yarn vercel:yolo --prod
+   ```
+
+### Environment Variables (Vercel Dashboard)
+
+Production'da aşağıdaki değişkeni ayarlayın:
+- `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`: `63aa10cd92321894d958c5213dba77d7`
+
+## 📱 Kullanım
+
+1. Ana sayfadan "Oda Oluştur" butonuna tıklayın
+2. Login olun ve oda oluşturun
+3. Arkadaşlarınızı odaya davet edin
+4. Market'ten ürün ekleyin
+5. Ödeme zamanı geldiğinde herkes payını ödesin
+
+## 🔗 Contract Adresi
+
+**Monad Testnet**: `0x3cfb0852E617A7926065E9B88906872960EF223b`
+
+## 📄 Lisans
+
+MIT License
 
 ## Quickstart
 
