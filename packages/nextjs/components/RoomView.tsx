@@ -1,4 +1,4 @@
-import { Pizza, Users, Wallet } from "lucide-react";
+import { Pizza, Users } from "lucide-react";
 
 export const RoomView = ({ roomId, members, cartItems, totalAmount, addItem }: any) => {
   return (
@@ -35,13 +35,16 @@ export const RoomView = ({ roomId, members, cartItems, totalAmount, addItem }: a
 
         {/* Aksiyon Paneli (Madde 5) */}
         <div className="bg-[#1a1a1a] rounded-3xl p-6 text-white shadow-2xl flex flex-col justify-between">
-           <p className="text-gray-400 text-sm font-bold uppercase tracking-widest">Ödeme Havuzu</p>
-           <button onClick={() => addItem({name: "🍕 Pizza", price: 0.01})} className="btn btn-outline border-white/20 text-white mt-4">
-             Test: Pizza Ekle
-           </button>
-           <button className="bg-[#ea004b] w-full py-4 rounded-2xl font-bold mt-6 shadow-[0_10px_20px_rgba(234,0,75,0.4)]">
-             PAYINI ÖDE
-           </button>
+          <p className="text-gray-400 text-sm font-bold uppercase tracking-widest">Ödeme Havuzu</p>
+          <button
+            onClick={() => addItem({ name: "🍕 Pizza", price: 0.01 })}
+            className="btn btn-outline border-white/20 text-white mt-4"
+          >
+            Test: Pizza Ekle
+          </button>
+          <button className="bg-[#ea004b] w-full py-4 rounded-2xl font-bold mt-6 shadow-[0_10px_20px_rgba(234,0,75,0.4)]">
+            PAYINI ÖDE
+          </button>
         </div>
       </div>
     </div>

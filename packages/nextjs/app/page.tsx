@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Link from "next/link";
 import { ArrowRight, Wallet, CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -37,11 +36,12 @@ export default function Home() {
             Oda Oluştur
             <ArrowRight className="w-5 h-5" />
           </button>
-          <Link href="/market">
-            <button className="bg-white text-gray-900 border-2 border-gray-200 px-8 py-4 rounded-2xl font-bold text-lg hover:border-pink-300 hover:bg-pink-50 transition-all">
-              Market'e Göz At
-            </button>
-          </Link>
+          <button
+            className="bg-white text-gray-900 border-2 border-gray-200 px-8 py-4 rounded-2xl font-bold text-lg hover:border-pink-300 hover:bg-pink-50 transition-all"
+            onClick={() => router.push("/market")}
+          >
+            Market'e Göz At
+          </button>
         </div>
 
         {/* Özellikler */}
