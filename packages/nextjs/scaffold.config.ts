@@ -1,4 +1,20 @@
-import { Chain } from "viem"; // Custom chain tipi için ekledik
+// Chain type'ını kendimiz tanımlayalım (viem olmadan)
+type Chain = {
+  id: number;
+  name: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  rpcUrls: {
+    default: { http: readonly string[] };
+    public: { http: readonly string[] };
+  };
+  blockExplorers: {
+    default: { name: string; url: string };
+  };
+};
 
 // 🔥 MONAD TESTNET TANIMI
 const monadTestnet = {
@@ -20,6 +36,7 @@ export type BaseConfig = {
   rpcOverrides?: Record<number, string>;
   walletConnectProjectId: string;
   onlyLocalBurnerWallet: boolean;
+  alchemyApiKey?: string;
 };
 
 export type ScaffoldConfig = BaseConfig;
@@ -36,6 +53,9 @@ const scaffoldConfig = {
   
   // ⚠️ MVP için gerçek cüzdan kullanmak için false
   onlyLocalBurnerWallet: false,
+
+  // Alchemy kullanmıyoruz, undefined
+  alchemyApiKey: undefined,
 } as const satisfies ScaffoldConfig;
 
 export default scaffoldConfig;
