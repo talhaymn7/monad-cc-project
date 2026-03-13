@@ -1,6 +1,3 @@
-"use client";
-
-import * as chains from "viem/chains";
 import { Chain } from "viem"; // Custom chain tipi için ekledik
 
 // 🔥 MONAD TESTNET TANIMI
@@ -18,7 +15,7 @@ const monadTestnet = {
 } as const satisfies Chain;
 
 export type BaseConfig = {
-  targetNetworks: readonly chains.Chain[];
+  targetNetworks: readonly Chain[];
   pollingInterval: number;
   rpcOverrides?: Record<number, string>;
   walletConnectProjectId: string;

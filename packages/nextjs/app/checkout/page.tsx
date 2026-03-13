@@ -2,15 +2,15 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useCart } from "~~/hooks/useCart"; 
 import { useAccount, useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther } from "viem";
+import { useCart } from "~~/hooks/useCart";
 import { notification } from "~~/utils/scaffold-eth";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { address } = useAccount();
-  const { individualTotals, roomId, markAsPaid, isAllPaid, paymentStatuses, members } = useCart();
+  const { individualTotals, markAsPaid, isAllPaid, paymentStatuses, members } = useCart();
   
   const RECIPIENT_ADDRESS = "0x70B3D3F6141268739860D39734FF83640e12307c";
 

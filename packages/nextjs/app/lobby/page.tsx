@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useCart } from "~~/hooks/useCart";
 import { useAccount } from "wagmi";
 import { ref, onValue } from "firebase/database";
+import { useCart } from "~~/hooks/useCart";
 import { database } from "~~/services/firebaseConfig";
 
 export default function LobbyPage() {
   const router = useRouter();
   const { address } = useAccount();
-  const { roomId, members, admin, roomStatus } = useCart(); // Yeni alanları aldık
+  const { roomId, members, roomStatus } = useCart(); // Yeni alanları aldık
   const [memberNames, setMemberNames] = useState<Record<string, string>>({});
 
   // --- OTOMATİK YÖNLENDİRME ---
