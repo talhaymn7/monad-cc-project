@@ -40,7 +40,7 @@ export default function Home() {
             className="bg-white text-gray-900 border-2 border-gray-200 px-8 py-4 rounded-2xl font-bold text-lg hover:border-pink-300 hover:bg-pink-50 transition-all"
             onClick={() => router.push("/market")}
           >
-            Market'e Göz At
+            Market&apos;e Göz At
           </button>
         </div>
 

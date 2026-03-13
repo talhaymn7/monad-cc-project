@@ -10,10 +10,8 @@ import { database } from "~~/services/firebaseConfig";
 export default function LobbyPage() {
   const router = useRouter();
   const { address } = useAccount();
-  const { roomId, members, admin, roomStatus, startOrder } = useCart(); // Yeni alanları aldık
+  const { roomId, members, admin, roomStatus } = useCart(); // Yeni alanları aldık
   const [memberNames, setMemberNames] = useState<Record<string, string>>({});
-
-  const isAdmin = address?.toLowerCase() === admin; // Giriş yapan kişi admin mi?
 
   // --- OTOMATİK YÖNLENDİRME ---
   useEffect(() => {

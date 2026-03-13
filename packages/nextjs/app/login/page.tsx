@@ -2,18 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useAccount } from "wagmi";
-import { useCart } from "~~/hooks/useCart";
 import { notification } from "~~/utils/scaffold-eth";
 import { FoodCharacter } from "~~/components/FoodCharacter";
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { address } = useAccount();
-  const { createRoom } = useCart();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

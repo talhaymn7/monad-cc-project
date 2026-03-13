@@ -6,15 +6,6 @@ import { useRouter } from "next/navigation";
 import { useCart } from "~~/hooks/useCart"; // Multiplayer beynimiz
 import { useAccount } from "wagmi";
 
-// Firebase import - sadece eğer mevcutsa
-let database: any = null;
-try {
-  const firebaseConfig = require("~~/services/firebaseConfig");
-  database = firebaseConfig.database;
-} catch (error) {
-  console.warn("Firebase config not available");
-}
-
 export default function CartPage() {
   const router = useRouter();
   const { address } = useAccount();
@@ -23,18 +14,38 @@ export default function CartPage() {
 
   // 1. Üye isimlerini cüzdan adresleriyle eşleştir
   useEffect(() => {
-    if (members.length === 0 || !database) return;
+    if (members.length === 0) return;
 
-    const { ref, onValue } = require("firebase/database");
-    const unsubscribes = members.map((addr) => {
-      const userRef = ref(database, `users_by_address/${addr.toLowerCase()}`);
-      return onValue(userRef, (snapshot) => {
-        if (snapshot.exists()) {
-          setMemberNames(prev => ({ ...prev, [addr.toLowerCase()]: snapshot.val().fullName }));
-        }
-      });
-    });
-    return () => unsubscribes.forEach(unsub => unsub());
+    let unsubscribe: (() => void) | undefined;
+
+    const loadNames = async () => {
+      try {
+        const firebase = await import("firebase/database");
+        const firebaseConfig = await import("~~/services/firebaseConfig");
+        const database = firebaseConfig.database;
+        const { ref, onValue } = firebase;
+
+        if (!database) throw new Error("Firebase not initialized");
+
+        const unsubs = members.map((addr) => {
+          const userRef = ref(database, `users_by_address/${addr.toLowerCase()}`);
+          return onValue(userRef, (snapshot) => {
+            if (snapshot.exists()) {
+              setMemberNames((prev) => ({ ...prev, [addr.toLowerCase()]: snapshot.val().fullName }));
+            }
+          });
+        });
+        unsubscribe = () => unsubs.forEach((fn) => fn());
+      } catch {
+        // Firebase düzgün değilse, isim eşlemesini geç
+      }
+    };
+
+    loadNames();
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [members]);
 
   return (

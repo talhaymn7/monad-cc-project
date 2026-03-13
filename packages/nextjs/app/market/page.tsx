@@ -5,20 +5,6 @@ import { useRouter } from "next/navigation";
 import { useCart } from "~~/hooks/useCart";
 import { ShoppingCart, ArrowLeft, Plus, Loader2 } from "lucide-react";
 
-// Firebase import - sadece eğer mevcutsa
-let database: any = null;
-let ref: any = null;
-let onValue: any = null;
-try {
-  const firebase = require("firebase/database");
-  const firebaseConfig = require("~~/services/firebaseConfig");
-  database = firebaseConfig.database;
-  ref = firebase.ref;
-  onValue = firebase.onValue;
-} catch (error) {
-  console.warn("Firebase not available");
-}
-
 export default function MarketPage() {
   const router = useRouter();
   const { roomId, addItem, cartItems, totalAmount } = useCart();
@@ -29,34 +15,49 @@ export default function MarketPage() {
 
   // --- DATABASE'DEN MENÜYÜ ÇEK ---
   useEffect(() => {
-    if (!database || !ref || !onValue) {
-      // Firebase mevcut değilse, static menü göster
+    let unsubscribe: (() => void) | undefined;
+
+    const loadMenu = async () => {
+      try {
+        const firebase = await import("firebase/database");
+        const firebaseConfig = await import("~~/services/firebaseConfig");
+        const database = firebaseConfig.database;
+        const { ref, onValue } = firebase;
+
+        if (!database) throw new Error("Firebase database not initialized");
+
+        const menuRef = ref(database, "menu");
+        unsubscribe = onValue(menuRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const menuList = Object.keys(data).map((key) => ({
+              id: key,
+              ...data[key],
+            }));
+            setMenuItems(menuList);
+          }
+          setLoading(false);
+        });
+        return;
+      } catch {
+        // Firebase yoksa fallback olarak statik menü göster
+      }
+
       setMenuItems([
-        { id: '1', name: 'Margherita Pizza', price: 120, category: 'Pizza' },
-        { id: '2', name: 'Pepperoni Pizza', price: 140, category: 'Pizza' },
-        { id: '3', name: 'Coca Cola', price: 15, category: 'İçecek' },
-        { id: '4', name: 'Burger', price: 80, category: 'Burger' },
-        { id: '5', name: 'Fries', price: 25, category: 'Yan Ürün' }
+        { id: "1", name: "Margherita Pizza", price: 120, category: "Pizza" },
+        { id: "2", name: "Pepperoni Pizza", price: 140, category: "Pizza" },
+        { id: "3", name: "Coca Cola", price: 15, category: "İçecek" },
+        { id: "4", name: "Burger", price: 80, category: "Burger" },
+        { id: "5", name: "Fries", price: 25, category: "Yan Ürün" },
       ]);
       setLoading(false);
-      return;
-    }
+    };
 
-    const menuRef = ref(database, "menu");
-    const unsubscribe = onValue(menuRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        // Objeyi listeye çeviriyoruz
-        const menuList = Object.keys(data).map(key => ({
-          id: key,
-          ...data[key]
-        }));
-        setMenuItems(menuList);
-      }
-      setLoading(false);
-    });
+    loadMenu();
 
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const handleAddToCart = async (item: any) => {
