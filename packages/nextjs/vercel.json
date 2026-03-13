@@ -1,4 +1,4 @@
 {
-  "installCommand": "yarn install",
+  "installCommand": "yarn install --no-immutable",
   "buildCommand": "yarn build"
 }

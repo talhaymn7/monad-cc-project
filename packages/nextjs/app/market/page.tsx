@@ -3,9 +3,21 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "~~/hooks/useCart";
-import { ref, onValue } from "firebase/database"; // Firebase dinleyicileri
-import { database } from "~~/services/firebaseConfig";
 import { ShoppingCart, ArrowLeft, Plus, Loader2 } from "lucide-react";
+
+// Firebase import - sadece eğer mevcutsa
+let database: any = null;
+let ref: any = null;
+let onValue: any = null;
+try {
+  const firebase = require("firebase/database");
+  const firebaseConfig = require("~~/services/firebaseConfig");
+  database = firebaseConfig.database;
+  ref = firebase.ref;
+  onValue = firebase.onValue;
+} catch (error) {
+  console.warn("Firebase not available");
+}
 
 export default function MarketPage() {
   const router = useRouter();
@@ -17,6 +29,19 @@ export default function MarketPage() {
 
   // --- DATABASE'DEN MENÜYÜ ÇEK ---
   useEffect(() => {
+    if (!database || !ref || !onValue) {
+      // Firebase mevcut değilse, static menü göster
+      setMenuItems([
+        { id: '1', name: 'Margherita Pizza', price: 120, category: 'Pizza' },
+        { id: '2', name: 'Pepperoni Pizza', price: 140, category: 'Pizza' },
+        { id: '3', name: 'Coca Cola', price: 15, category: 'İçecek' },
+        { id: '4', name: 'Burger', price: 80, category: 'Burger' },
+        { id: '5', name: 'Fries', price: 25, category: 'Yan Ürün' }
+      ]);
+      setLoading(false);
+      return;
+    }
+
     const menuRef = ref(database, "menu");
     const unsubscribe = onValue(menuRef, (snapshot) => {
       const data = snapshot.val();

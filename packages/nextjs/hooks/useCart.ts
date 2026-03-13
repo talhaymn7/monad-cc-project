@@ -5,6 +5,9 @@ import { ref, onValue, set, push } from "firebase/database";
 import { database } from "../services/firebaseConfig";
 import { useAccount } from "wagmi";
 
+// Firebase config kontrolü
+const isFirebaseAvailable = !!database;
+
 export const useCart = () => {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<any[]>([]);
@@ -22,7 +25,7 @@ export const useCart = () => {
   // --- ODA YÖNETİMİ ---
 
   const createRoom = async () => {
-    if (!address) return;
+    if (!address || !isFirebaseAvailable) return;
     const newRoomId = Math.floor(100000000 + Math.random() * 900000000).toString();
     const creatorAddress = address.toLowerCase();
 
@@ -38,7 +41,7 @@ export const useCart = () => {
   };
 
   const startOrder = async () => {
-    if (roomId && address?.toLowerCase() === admin?.toLowerCase()) {
+    if (roomId && address?.toLowerCase() === admin?.toLowerCase() && isFirebaseAvailable) {
       await set(ref(database, `rooms/${roomId}/metadata/status`), "shopping");
     }
   };
@@ -49,13 +52,13 @@ export const useCart = () => {
   };
 
   const markAsPaid = async () => {
-    if (!roomId || !address) return;
+    if (!roomId || !address || !isFirebaseAvailable) return;
     const paymentRef = ref(database, `rooms/${roomId}/payments/${address.toLowerCase()}`);
     await set(paymentRef, true);
   };
 
   const addItem = async (item: { name: string; price: number }) => {
-    if (!roomId || !address) return;
+    if (!roomId || !address || !isFirebaseAvailable) return;
     const itemRef = ref(database, `orders/${roomId}/items`);
     await push(itemRef, { 
       ...item, 
@@ -72,7 +75,7 @@ export const useCart = () => {
   }, []);
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId || !isFirebaseAvailable) return;
 
     // A. Metadata (Admin & Durum)
     const unsubscribeMeta = onValue(ref(database, `rooms/${roomId}/metadata`), (snapshot) => {
@@ -127,11 +130,11 @@ export const useCart = () => {
       unsubscribeCart();
       unsubscribePayments();
     };
-  }, [roomId, address]);
+  }, [roomId, address, isFirebaseAvailable]);
 
   // 🔥 E. İSİM MOTORU: Üyelerin isimlerini profillerden çek
   useEffect(() => {
-    if (members.length === 0) return;
+    if (members.length === 0 || !isFirebaseAvailable) return;
 
     const unsubscribes = members.map((memberAddr) => {
       const addr = memberAddr.toLowerCase();

@@ -5,8 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "~~/hooks/useCart"; // Multiplayer beynimiz
 import { useAccount } from "wagmi";
-import { ref, onValue } from "firebase/database";
-import { database } from "~~/services/firebaseConfig";
+
+// Firebase import - sadece eğer mevcutsa
+let database: any = null;
+try {
+  const firebaseConfig = require("~~/services/firebaseConfig");
+  database = firebaseConfig.database;
+} catch (error) {
+  console.warn("Firebase config not available");
+}
 
 export default function CartPage() {
   const router = useRouter();
@@ -16,7 +23,9 @@ export default function CartPage() {
 
   // 1. Üye isimlerini cüzdan adresleriyle eşleştir
   useEffect(() => {
-    if (members.length === 0) return;
+    if (members.length === 0 || !database) return;
+
+    const { ref, onValue } = require("firebase/database");
     const unsubscribes = members.map((addr) => {
       const userRef = ref(database, `users_by_address/${addr.toLowerCase()}`);
       return onValue(userRef, (snapshot) => {
