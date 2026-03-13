@@ -46,8 +46,14 @@ yarn deploy
 
 ### Environment Variables (Vercel Dashboard)
 
-Production'da aşağıdaki değişkeni ayarlayın:
+Production'da aşağıdaki değişkenleri ayarlayın:
 - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`: `63aa10cd92321894d958c5213dba77d7`
+- `NEXT_PUBLIC_FIREBASE_API_KEY`: Firebase API Key
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`: Firebase Auth Domain
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`: Firebase Project ID
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`: Firebase Storage Bucket
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`: Firebase Messaging Sender ID
+- `NEXT_PUBLIC_FIREBASE_APP_ID`: Firebase App ID
 
 ## 📱 Kullanım
 
